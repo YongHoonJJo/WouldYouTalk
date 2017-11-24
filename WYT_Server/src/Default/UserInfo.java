@@ -20,6 +20,7 @@ public class UserInfo extends Thread {
 	
 	private Socket user_socket;
 	
+	private Lists lists;
 	private Vector<UserInfo> user_vc;
 	private String Nickname = "";
 	
@@ -28,18 +29,21 @@ public class UserInfo extends Thread {
 	private JTextField sfTextField;
 	private JTextArea sfTextArea;
 	
-	public UserInfo(ServerFrame serverFrame, Socket soc, Vector<UserInfo> vc) {
+	public UserInfo(ServerFrame serverFrame, Socket soc, Lists lists) {
 		this.serverFrame = serverFrame;
 		sfStartBtn = serverFrame.getStartBtn();
 		sfTextField = serverFrame.getTextField();
 		sfTextArea = serverFrame.getTextArea();
 		
 		this.user_socket = soc;
-		this.user_vc = vc;
-		User_network();
+		this.lists = lists;
+		this.user_vc = lists.getUserInfoVec();
+		//this.user_vc = vc;
+		//User_network();
 	}
 	
-	public void User_network() {
+	public boolean User_network() {
+		boolean isCorrect = false;
 		try {
 			is = user_socket.getInputStream();
 			dis = new DataInputStream(is);
@@ -47,17 +51,33 @@ public class UserInfo extends Thread {
 			dos = new DataOutputStream(os);
 			
 			byte[] b = new byte[128];
-			dis.read(b);
-			
-			String Nickname = new String(b);
-			Nickname = Nickname.trim();
-			sfTextArea.append("ID " + Nickname + " 접속\n"); // 내용을 textArea 위에 붙이고
+			dis.read(b); // 로그인 정보 전달
+			String loginInfo = new String(b);
+			loginInfo = loginInfo.trim();
+			sfTextArea.append("loginInfo : " + loginInfo + "\n"); // 내용을 textArea 위에 붙이고
 			sfTextArea.setCaretPosition(sfTextArea.getText().length()); // 맨 아래로 스크롤
-			send_Msg(Nickname + "님 환영합니다."); // 연결된 사용자에게 정상접속을 알림
+			
+			/*** ID / PW check ***/
+			String[] data = loginInfo.split(":");
+			String[] info = data[1].split("/");
+			
+			if(lists.isIdPasswdCorrect(info[0], info[1])) { 
+				send_Msg("[LOGIN]:OK");
+				sfTextArea.append("ID " + info[0] + " 접속\n");
+				isCorrect = true;
+			}
+			else {
+				send_Msg("[LOGIN]:NOK");
+				sfTextArea.append("ID or Passwd 오류\n");
+			}
+			
+			sfTextArea.setCaretPosition(sfTextArea.getText().length()); // 맨 아래로 스크롤
+			//send_Msg(Nickname + "님 환영합니다."); // 연결된 사용자에게 정상접속을 알림
 		} catch(Exception e) {
 			sfTextArea.append("스트림 세팅 에러\n");
 			sfTextArea.setCaretPosition(sfTextArea.getText().length());
 		}
+		return isCorrect;
 	}
 	
 	public void send_Msg(String str) {

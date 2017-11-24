@@ -5,7 +5,7 @@ import java.util.Vector;
 public class User {
 	private int userNum;
 	private String name;
-	private String email; // For 사용자 식별..
+	private String id; // For 사용자 식별..
 	private String passwd;
 	private String stateMsg;
 	// userPhotoPath
@@ -16,16 +16,19 @@ public class User {
 	private Vector<Integer> chattingLists = new Vector<Integer>(); // 나의 채팅 리스트
 	// 단체 채팅 리스트는 추후에..
 	
-	public User(String name, String email, String passwd) {
+	public User(String name, String id, String passwd) {
 		this.name = name;
-		this.email = email;
+		this.id = id;
 		this.passwd = passwd;
 		this.stateMsg = "";
 	}
 	
-	public String getEmail() { 
-		return email; 
+	public String getID() { 
+		return id; 
 	} 
+	public String getPasswd() {
+		return passwd;
+	}
 	public void setUserNum(int num) { 
 		userNum = num; 
 	}

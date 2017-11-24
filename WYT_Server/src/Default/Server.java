@@ -41,6 +41,8 @@ public class Server {
 		lists.addUser(new User("구돌이", "h09", "1234"));
 		lists.addUser(new User("십돌이", "h10", "1234"));
 		
+		//for(int i=0; ; )
+		
 		this.serverFrame = serverFrame;
 		sfStartBtn = serverFrame.getStartBtn();
 		sfTextField = serverFrame.getTextField();
@@ -72,10 +74,15 @@ public class Server {
 						sfTextArea.append("사용자 접속!!\n");
 						// 연결된 소켓 정보는 금방 사라지므로, user 클래스 형태로 객체 생성
 						
-						UserInfo user = new UserInfo(serverFrame, soc, vc);
-						
-						vc.add(user);
-						user.start(); // 유저 객체의 스레드 실행
+						UserInfo userInfo = new UserInfo(serverFrame, soc, lists);
+						if(userInfo.User_network()) { // ID, PW가 유효하다면,
+							vc.add(userInfo);
+							// 친구, 채팅리스트 보내기
+							userInfo.start(); // 유저 객체의 스레드 실행
+						}
+						else {
+							// 스트림 종료
+						}
 						
 					} catch (IOException e) {
 						sfTextArea.append("!!! accept 에러 발생...!!\n");

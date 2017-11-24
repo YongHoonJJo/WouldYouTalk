@@ -80,15 +80,14 @@ public class Network {
 	}
 	
 	public boolean login(String id, String pw) {
-		boolean isOk = false;
-		sendMessage("[LOGIN]"+id+"/"+pw); // [LOGIN]ID/PW
+		
+		sendMessage("[LOGIN]:"+id+"/"+pw); // [LOGIN]:ID/PW
 		try {
 			byte[] b = new byte[128];
 			dis.read(b);
 			String msg = new String(b);
 			msg = msg.trim();
-			isOk = msg.equals("OK");
-			
+			return msg.equals("[LOGIN]:OK"); 	
 		} catch (IOException e) {
 			//textArea.append("메세지 수신 에러!!\n");
 			try { // 서버와 소켓 통신에 문제가 생겼을 경우 소켓을 닫느다.
@@ -98,7 +97,7 @@ public class Network {
 			} catch (IOException ee) {
 			}
 		}
-		return isOk;
+		return false;
 	}
 	
 	public void sendMessage(String str) {
