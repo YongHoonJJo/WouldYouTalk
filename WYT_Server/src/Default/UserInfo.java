@@ -21,8 +21,10 @@ public class UserInfo extends Thread {
 	private Socket user_socket;
 	
 	private Lists lists;
-	private Vector<UserInfo> user_vc;
-	private String Nickname = "";
+	int userNum;
+	private Vector<UserInfo> vcUserInfo;
+	private Vector<User> vcUser;
+	//private String Nickname = "";
 	
 	private ServerFrame serverFrame;
 	private JButton sfStartBtn;
@@ -35,11 +37,39 @@ public class UserInfo extends Thread {
 		sfTextField = serverFrame.getTextField();
 		sfTextArea = serverFrame.getTextArea();
 		
-		this.user_socket = soc;
+		this.user_socket = soc; 
 		this.lists = lists;
-		this.user_vc = lists.getUserInfoVec();
+		this.vcUserInfo = lists.getUserInfoVec();
+		this.vcUser = lists.getUserVec();
 		//this.user_vc = vc;
 		//User_network();
+	}
+	
+	public int getUserNum() {
+		return userNum;
+	}
+	
+	public void sendFriendInfo(int userNum) { // [FLIST]:ID:name:stateMsg
+		String Flist = vcUser.elementAt(userNum).getID()+":"; 
+		Flist += vcUser.elementAt(userNum).getName()+":";
+		Flist += vcUser.elementAt(userNum).getStateMsg();
+		send_Msg("[FLIST]:"+Flist);
+		// 프사 바이트로 보내기
+		sfTextArea.append("[FLIST]:"+Flist+'\n');
+		sfTextArea.setCaretPosition(sfTextArea.getText().length());
+	}
+	
+	public void sendFriendsList() { // id, name, stateMsg, photo
+		Vector<Integer> Friends = vcUser.elementAt(userNum).getFriendsNumVec();	
+		for(Integer i : Friends) { // i == friendNum
+			sendFriendInfo(i);
+			try {
+				Thread.sleep(60); // 개선해야할 사항...
+			}
+			catch (InterruptedException e) {
+				
+			}
+		}
 	}
 	
 	public boolean User_network() {
@@ -63,6 +93,7 @@ public class UserInfo extends Thread {
 			
 			if(lists.isIdPasswdCorrect(info[0], info[1])) { 
 				send_Msg("[LOGIN]:OK");
+				userNum = lists.getUserNum(info[0]); // 접속자 ID에 대응하는 userNum 정보 등록
 				sfTextArea.append("ID " + info[0] + " 접속\n");
 				isCorrect = true;
 			}
@@ -79,6 +110,8 @@ public class UserInfo extends Thread {
 		}
 		return isCorrect;
 	}
+	
+	
 	
 	public void send_Msg(String str) {
 		try {
@@ -99,8 +132,8 @@ public class UserInfo extends Thread {
 	}
 	
 	public void broad_cast(String str) {
-		for(int i=0; i<user_vc.size(); i++) {
-			UserInfo imsi = (UserInfo) user_vc.elementAt(i);
+		for(int i=0; i<vcUserInfo.size(); i++) {
+			UserInfo imsi = (UserInfo) vcUserInfo.elementAt(i);
 			imsi.send_Msg(str);
 		}
 	}
@@ -123,8 +156,8 @@ public class UserInfo extends Thread {
 					dos.close();
 					dis.close();
 					user_socket.close();
-					user_vc.removeElement(this); // 에러가 난 현재 객체를 벡터에서 삭제
-					sfTextArea.append(user_vc.size() + " : 현재 벡터에 담겨진 사용자 수\n");
+					vcUserInfo.removeElement(this); // 에러가 난 현재 객체를 벡터에서 삭제
+					sfTextArea.append(vcUserInfo.size() + " : 현재 벡터에 담겨진 사용자 수\n");
 					sfTextArea.setCaretPosition(sfTextArea.getText().length());
 					break;
 				} catch (Exception ee) {

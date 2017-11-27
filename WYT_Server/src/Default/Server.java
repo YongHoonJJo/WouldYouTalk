@@ -30,16 +30,22 @@ public class Server {
 		vc = lists.getUserInfoVec();
 		
 		/*** 약식 회원가입 ***/
-		lists.addUser(new User("송정은", "h01", "1234")); // Name, ID, PW
-		lists.addUser(new User("조용훈", "h02", "1234"));
-		lists.addUser(new User("삼순이", "h03", "1234"));
-		lists.addUser(new User("사순이", "h04", "1234"));
-		lists.addUser(new User("오순이", "h05", "1234"));
-		lists.addUser(new User("육순이", "h06", "1234"));
-		lists.addUser(new User("칠돌이", "h07", "1234"));
-		lists.addUser(new User("팔돌이", "h08", "1234"));
-		lists.addUser(new User("구돌이", "h09", "1234"));
-		lists.addUser(new User("십돌이", "h10", "1234"));
+		lists.addUser(new User("송정은", "h01", "1234", lists)); // Name, ID, PW
+		lists.addUser(new User("조용훈", "h02", "1234", lists));
+		lists.addUser(new User("삼순이", "h03", "1234", lists));
+		lists.addUser(new User("사순이", "h04", "1234", lists));
+		lists.addUser(new User("오순이", "h05", "1234", lists));
+		lists.addUser(new User("육순이", "h06", "1234", lists));
+		lists.addUser(new User("칠돌이", "h07", "1234", lists));
+		lists.addUser(new User("팔돌이", "h08", "1234", lists));
+		lists.addUser(new User("구돌이", "h09", "1234", lists));
+		lists.addUser(new User("십돌이", "h10", "1234", lists));
+		lists.addUser(new User("십일돌이", "h11", "1234", lists));
+		
+		// 친구추가
+		for(int i=1; i<11; i++)
+			lists.getUserVec().elementAt(0).addFriends(i);
+		//lists.getUserVec().elementAt(0).addFriends(2);
 		
 		//for(int i=0; ; )
 		
@@ -77,7 +83,9 @@ public class Server {
 						UserInfo userInfo = new UserInfo(serverFrame, soc, lists);
 						if(userInfo.User_network()) { // ID, PW가 유효하다면,
 							vc.add(userInfo);
-							// 친구, 채팅리스트 보내기
+							// userNum을 통해 soc 찾기, 동일아이디 다중접속 고려해보기..
+							userInfo.sendFriendsList();// 친구리스트 보내기
+							// 채팅리스트 보내기
 							userInfo.start(); // 유저 객체의 스레드 실행
 						}
 						else {

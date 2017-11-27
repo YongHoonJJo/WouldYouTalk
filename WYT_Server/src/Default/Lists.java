@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public class Lists {
 	private int userNum;
-	private HashMap<String, Integer> map = new HashMap<String, Integer>();
+	private HashMap<String, Integer> map = new HashMap<String, Integer>(); // id,userNum
 	private HashMap<String, String> idpw = new HashMap<String, String>();
 	
 	private Vector<User> vcUsers = new Vector<User>(); // 모든 사용자 리스트
@@ -17,6 +17,10 @@ public class Lists {
 	
 	public Lists() {
 		userNum = chatNum = 0;
+	}
+	
+	public Vector<User> getUserVec() {
+		return vcUsers;
 	}
 	
 	public Vector<UserInfo> getUserInfoVec() { 
@@ -32,8 +36,8 @@ public class Lists {
 		idpw.put(user.getID(), user.getPasswd()); // login 검사용
 	}
 	
-	public int getUserNum(String email) { // 사용자 고유 식별번호 리턴
-		return map.get(email);
+	public int getUserNum(String ID) { // 사용자 고유 식별번호 리턴
+		return map.get(ID);
 	}
 	
 	public boolean isIdPasswdCorrect(String id, String pw) {

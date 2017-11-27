@@ -1,16 +1,17 @@
 package WouldYouTalk;
 
 public class UserInfo {
-	private int userID;
+	private String ID;
 	private String name;
 	private String email;
 	private String stateMsg;
 	private String photoPath;
 	// background photo;
 	
-	public UserInfo(String name) {
+	public UserInfo(String ID, String name, String stateMsg) {
+		this.ID = ID;
 		this.name = name;
-		stateMsg = "Hello Wolrd!";
+		this.stateMsg = stateMsg;
 		//photoPath = "C:\\Users\\YongHoonJJo\\eclipse-workspace\\wouldYouTalk\\src\\WouldYouTalk/default.png";
 		photoPath = "src/WouldYouTalk/default.png";
 	}
@@ -26,5 +27,4 @@ public class UserInfo {
 	public String getStateMsg() {
 		return stateMsg;
 	}
-	
 }

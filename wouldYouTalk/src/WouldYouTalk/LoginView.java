@@ -72,8 +72,11 @@ public class LoginView extends JFrame {
     		
     		if(isIdValid) {
 	    		MainView mainView = new MainView();
-	    		setVisible(false);
-	    		network.getThread().start();
+	    		setVisible(false); // LoginView 
+	    		//mainView.getListFriends().setFriendPanel("h66", "IU", "stateMsg"); // ok
+	    		network.setMainView(mainView.getListFriends());
+	    		network.threadStart();
+	    		//mainView.getListFriends().setFriendPanel("h44", "ok", "stateMsg"); // 
 	    		mainView.setVisible(true);
 	    	}
     		else {
