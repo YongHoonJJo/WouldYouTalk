@@ -40,7 +40,7 @@ public class Server {
 		lists.addUser(new User("팔돌이", "h08", "1234", lists));
 		lists.addUser(new User("구돌이", "h09", "1234", lists));
 		lists.addUser(new User("십돌이", "h10", "1234", lists));
-		lists.addUser(new User("십일돌이", "h11", "1234", lists));
+		lists.addUser(new User("슛돌이", "h11", "1234", lists));
 		
 		// 친구추가
 		for(int i=1; i<11; i++)
@@ -85,7 +85,9 @@ public class Server {
 							vc.add(userInfo);
 							// userNum을 통해 soc 찾기, 동일아이디 다중접속 고려해보기..
 							userInfo.sendFriendsList();// 친구리스트 보내기
+							// 프사 데이터 보내기
 							// 채팅리스트 보내기
+							// 나를 등록한 친구 리스트 보내기..
 							userInfo.start(); // 유저 객체의 스레드 실행
 						}
 						else {

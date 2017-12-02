@@ -39,7 +39,7 @@ public class ServerFrame extends JFrame {
 		contentPane.add(js);
 		js.setViewportView(textArea); // ???
 		
-		textField = new JTextField(); // 사용할 포트번호 입력
+		textField = new JTextField("30015"); // 사용할 포트번호 입력
 		textField.setBounds(98, 264, 154, 37);
 		textField.setColumns(10);
 		contentPane.add(textField);

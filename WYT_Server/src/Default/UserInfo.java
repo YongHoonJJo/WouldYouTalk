@@ -61,15 +61,26 @@ public class UserInfo extends Thread {
 	
 	public void sendFriendsList() { // id, name, stateMsg, photo
 		Vector<Integer> Friends = vcUser.elementAt(userNum).getFriendsNumVec();	
+		StringBuffer Flist = new StringBuffer("[FLIST]::");
 		for(Integer i : Friends) { // i == friendNum
-			sendFriendInfo(i);
-			try {
-				Thread.sleep(60); // 개선해야할 사항...
-			}
-			catch (InterruptedException e) {
-				
-			}
+			Flist.append(vcUser.elementAt(i).getID()+":"); 
+			Flist.append(vcUser.elementAt(i).getName()+":");
+			Flist.append(vcUser.elementAt(i).getStateMsg());
+			Flist.append("::");
 		}
+		String msg = new String(Flist);
+		send_Msg(msg);
+		sfTextArea.append(msg+"\n");
+		sfTextArea.setCaretPosition(sfTextArea.getText().length());
+		
+		try { // 개선해야할 사항... cuz TCP
+			Thread.sleep(100); }
+		catch (InterruptedException e) {
+		}
+		send_Msg("[FLIST_END]::");
+		sfTextArea.append("[FLIST_END]\n");
+		sfTextArea.setCaretPosition(sfTextArea.getText().length());
+		
 	}
 	
 	public boolean User_network() {
@@ -92,14 +103,18 @@ public class UserInfo extends Thread {
 			String[] info = data[1].split("/");
 			
 			if(lists.isIdPasswdCorrect(info[0], info[1])) { 
-				send_Msg("[LOGIN]:OK");
+				send_Msg("[LOGIN]:OK"); // "[LOGIN]:OK::"
 				userNum = lists.getUserNum(info[0]); // 접속자 ID에 대응하는 userNum 정보 등록
 				sfTextArea.append("ID " + info[0] + " 접속\n");
+				sfTextArea.setCaretPosition(sfTextArea.getText().length()); // 맨 아래로 스크롤
+				sfTextArea.append("[LOGIN]:OK\n");
 				isCorrect = true;
 			}
 			else {
-				send_Msg("[LOGIN]:NOK");
+				send_Msg("[LOGIN]:NOK::");
 				sfTextArea.append("ID or Passwd 오류\n");
+				sfTextArea.setCaretPosition(sfTextArea.getText().length()); // 맨 아래로 스크롤
+				sfTextArea.append("[LOGIN]:NOK\n");
 			}
 			
 			sfTextArea.setCaretPosition(sfTextArea.getText().length()); // 맨 아래로 스크롤
@@ -110,8 +125,6 @@ public class UserInfo extends Thread {
 		}
 		return isCorrect;
 	}
-	
-	
 	
 	public void send_Msg(String str) {
 		try {
