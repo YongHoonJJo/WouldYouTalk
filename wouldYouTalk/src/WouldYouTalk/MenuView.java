@@ -12,7 +12,7 @@ public class MenuView extends JPanel {
 	public MenuView(MainView mainView) {
 		this.mainView = mainView;
 		
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(Color.BLUE);
 		setLayout(new FlowLayout());
 		
 		JButton FriendsBtn = new JButton("Friends");

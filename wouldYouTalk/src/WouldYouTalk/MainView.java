@@ -27,9 +27,9 @@ public class MainView extends JFrame {
         setLayout(null);
         
         menu.setBounds(0, 0, 428, 75);
-        listFriends.setBounds(0, 75, 428, 518);
-        listChatting.setBounds(0, 75, 428, 518);
-        listMoreInfo.setBounds(0, 75, 428, 518);
+        listFriends.setBounds(0, 75, 428, 718);
+        listChatting.setBounds(0, 75, 428, 718);
+        listMoreInfo.setBounds(0, 75, 428, 718);
         
         add(menu);
         add(listFriends);

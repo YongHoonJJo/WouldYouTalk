@@ -79,6 +79,7 @@ public class ListFriends extends JPanel{
 	public void setStateViewNull() {
 		stateView = null;
 	}
+	
 	class popStateViewListener extends MouseAdapter {
 		
 		UserInfo user;
