@@ -1,5 +1,7 @@
 package Panels;
 
+import java.awt.Color;
+
 import javax.swing.*;
 
 public class StateMsgPanel extends JPanel {
@@ -8,7 +10,7 @@ public class StateMsgPanel extends JPanel {
 	public StateMsgPanel(String msg) { 
 		msgLabel = new JLabel(msg);	
 		add(msgLabel);
-		
+		//setBackground(Color.WHITE);
 		setOpaque(false);
 	}
 	

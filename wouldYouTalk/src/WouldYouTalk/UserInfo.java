@@ -16,6 +16,10 @@ public class UserInfo {
 		photoPath = "src/WouldYouTalk/default.png";
 	}
 	
+	public String getID() {
+		return ID;
+	}
+	
 	public String getName() {
 		return name;
 	}

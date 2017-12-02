@@ -37,12 +37,12 @@ public class LoginView extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null); // container의 배치관리자 제거
 
-        tf_ID = new JTextField(" 우쥬톡 계정(아이디)");
+        tf_ID = new JTextField("h01");
         tf_ID.setBounds(100, 333, 228, 43);
         contentPane.add(tf_ID);
         tf_ID.setColumns(10);
 
-        tf_PW = new JTextField(" 비밀번호");
+        tf_PW = new JTextField("1234");
         tf_PW.setBounds(100, 405, 228, 43);
         contentPane.add(tf_PW);
         tf_PW.setColumns(10);

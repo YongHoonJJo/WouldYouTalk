@@ -2,12 +2,15 @@ package WouldYouTalk;
 
 import java.awt.*;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
 public class MainView extends JFrame {
 	private ListChatting listChatting; // JPanel
 	private ListFriends listFriends;
 	private ListMoreInfo listMoreInfo;
 	private MenuView menu;
+	
+	//private JScrollPane js;
 	
 	public MainView() {
 		listChatting = new ListChatting();

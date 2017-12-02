@@ -57,21 +57,22 @@ public class Network {
 				while(true) {
 					try {
 						//Thread.sleep(10);
-						byte[] b = new byte[128];
+						byte[] b = new byte[1024];
 						dis.read(b);
 						String msg = new String(b);
 						msg = msg.trim();
-						
-						String[] data = msg.split(":");
+						System.out.println(msg);
+						String[] data = msg.split("::");
 						/*** 프로토콜에 따라 처리하기 ***/
 						if(data[0].equals("[FLIST]")) { 
-							String id = data[1];
-							String name = data[2];
-							String stateMsg = data[3];
-							listFriends.setFriendPanel(id, name, stateMsg);
-							
-							//for(String s : data) System.out.println(s);
+							for(int i=1; i<data.length; i++) {
+								String[] info = data[i].split(":");
+								listFriends.initUserInfo(info[0], info[1], info[2]);
+							}
 						} 
+						else if(data[0].equals("[FLIST_END]")) {
+							listFriends.setFriendPanel();
+						}
 					//} catch (InterruptedException ee) {
 					} catch (IOException e) {
 						//textArea.append("메세지 수신 에러!!\n");
