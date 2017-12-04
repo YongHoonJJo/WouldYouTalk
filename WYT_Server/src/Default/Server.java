@@ -89,9 +89,11 @@ public class Server {
 							System.out.println("before sendF");
 							userInfo.sendFriendsList();// 친구리스트 보내기
 							System.out.println("after sendF");
+							
 							// 프사 데이터 보내기
 							// 채팅리스트 보내기
 							// 나를 등록한 친구 리스트 보내기..
+							
 							userInfo.start(); // 유저 객체의 스레드 실행
 							System.out.println("after thread");
 						}

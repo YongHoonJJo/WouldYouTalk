@@ -12,6 +12,7 @@ public class Network {
 	private String ip;
 	private int port;
 	
+	//private static Socket socket;
 	private Socket socket;
 	private InputStream is;
 	private OutputStream os;
@@ -26,18 +27,21 @@ public class Network {
 	}
 	
 	public Network() {
-		ip = "127.0.0.1";
-		port = 30015;
-		
-		try {
-			socket = new Socket(ip, port);
-			if(socket != null) {
-				Connection();
+		if(socket == null) {
+			ip = "127.0.0.1";
+			port = 30015;
+			
+			try {
+				socket = new Socket(ip, port);
+				if(socket != null) {
+					Connection();
+				}
+			} catch (UnknownHostException e) {
+			} catch (IOException e) {
+				//textArea.append("家南 立加 俊矾!!\n");
 			}
-		} catch (UnknownHostException e) {
-		} catch (IOException e) {
-			//textArea.append("家南 立加 俊矾!!\n");
 		}
+		//return socket;
 	}
 	
 	public void Connection() {
@@ -57,8 +61,10 @@ public class Network {
 				while(true) {
 					try {
 						//Thread.sleep(10);
-						byte[] b = new byte[1024];
-						dis.read(b);
+						//byte[] b = new byte[1024];
+						//dis.read(b);
+						String b = dis.readUTF();
+						
 						String msg = new String(b);
 						msg = msg.trim();
 						System.out.println(msg);
@@ -100,8 +106,11 @@ public class Network {
 		
 		sendMessage("[LOGIN]:"+id+"/"+pw); // [LOGIN]:ID/PW
 		try {
-			byte[] b = new byte[128];
-			dis.read(b);
+			//byte[] b = new byte[128];
+			//int k = dis.read(b);
+			//System.out.println("lonin : " + k);
+			String b = dis.readUTF();
+			
 			String msg = new String(b);
 			msg = msg.trim();
 			return msg.equals("[LOGIN]:OK"); 	
@@ -119,8 +128,9 @@ public class Network {
 	
 	public void sendMessage(String str) {
 		try {
-			byte[] bb = str.getBytes();
-			dos.write(bb);
+			//byte[] bb = str.getBytes();
+			//dos.write(bb);
+			dos.writeUTF(str);
 		} catch (IOException e) {
 			//textArea.append("皋技瘤 价脚 俊矾\n");
 		}

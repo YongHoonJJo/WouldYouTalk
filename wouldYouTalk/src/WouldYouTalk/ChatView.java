@@ -22,11 +22,11 @@ public class ChatView extends JFrame {
 		chatUserInfo.setBounds(0,  0,  400, 50);
 		add(chatUserInfo);
 		
-		chatRoomPanel = new ChatRoomPanel();
+		chatRoomPanel = new ChatRoomPanel(user);
 		chatRoomPanel.setBounds(0, 50, 400, 400);
 		add(chatRoomPanel);
 		
-		chatTextAreaPanel = new ChatTextAreaPanel();
+		chatTextAreaPanel = new ChatTextAreaPanel(user);
 		chatTextAreaPanel.setBounds(0, 450, 400, 90);
 		add(chatTextAreaPanel);
 		

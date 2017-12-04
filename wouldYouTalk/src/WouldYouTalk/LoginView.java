@@ -15,10 +15,16 @@ public class LoginView extends JFrame {
 
     private Network network;
     
+    private static String myID;
+    
     public LoginView() {
         init();
     }
-
+    
+    public static String getMyID() {
+    	return myID;
+    }
+    
     public void init() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Would You Talk");
@@ -71,7 +77,8 @@ public class LoginView extends JFrame {
     		isIdValid = network.login(id, pw);
     		
     		if(isIdValid) {
-	    		MainView mainView = new MainView();
+    			myID = id; // 채팅시 나의 정보를 식별하기 위해..
+	    		MainView mainView = new MainView(network);
 	    		setVisible(false); // LoginView 
 	    		
 	    		network.setMainView(mainView.getListFriends());

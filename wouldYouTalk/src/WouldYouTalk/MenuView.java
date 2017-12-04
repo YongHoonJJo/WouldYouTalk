@@ -2,17 +2,20 @@ package WouldYouTalk;
 
 import java.awt.*;
 import java.awt.event.*;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class MenuView extends JPanel {
 	
 	private MainView mainView;
+	//private ImageIcon bgImg;
 	
 	public MenuView(MainView mainView) {
 		this.mainView = mainView;
 		
-		setBackground(Color.BLUE);
+		setBackground(Color.LIGHT_GRAY);
 		setLayout(new FlowLayout());
 		
 		JButton FriendsBtn = new JButton("Friends");

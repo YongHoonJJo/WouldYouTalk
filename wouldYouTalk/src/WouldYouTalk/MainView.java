@@ -5,21 +5,36 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 public class MainView extends JFrame {
-	private ListChatting listChatting; // JPanel
+	private static ListChatting listChatting; // JPanel
 	private ListFriends listFriends;
 	private ListMoreInfo listMoreInfo;
 	private MenuView menu;
 	
 	//private JScrollPane js;
 	
-	public MainView() {
+	private static Network network;
+	
+	public static ListChatting getListChatting() {
+		return listChatting;
+	}
+	
+	public static Network getNetwork() {
+		return network != null ? network : null;
+	}
+	
+	public MainView(Network network) {
+		this.network = network;
+		
 		listChatting = new ListChatting();
 		listFriends = new ListFriends();
 		listMoreInfo = new ListMoreInfo();
-		menu = new MenuView(this);
+		menu = new MenuView(this);	
+		
+		this.network = network;
+		
 		setView();
 	}
-
+	
 	public void setView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Would You Talk MainView");
@@ -34,10 +49,7 @@ public class MainView extends JFrame {
         add(menu);
         add(listFriends);
 	}
-	
-	public ListChatting getListChatting() {
-		return listChatting;
-	}
+	//public ListChatting getListChatting() { return listChatting; }
 	
 	public ListFriends getListFriends() {
 		return listFriends;
