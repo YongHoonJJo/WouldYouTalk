@@ -27,6 +27,9 @@ public class User {
 		this.lists = lists;;
 	}
 	
+	public void setStateMsg(String msg) {
+		this.stateMsg = msg;
+	}
 	public String getName() { return name; }
 	public String getID() { return id; } 
 	public String getPasswd() { return passwd; }

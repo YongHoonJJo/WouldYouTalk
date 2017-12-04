@@ -91,8 +91,10 @@ public class UserInfo extends Thread {
 			os = user_socket.getOutputStream();
 			dos = new DataOutputStream(os);
 			
-			byte[] b = new byte[128];
-			dis.read(b); // 로그인 정보 전달
+			//byte[] b = new byte[128];
+			//dis.read(b); // 로그인 정보 전달
+			String b = dis.readUTF();
+			
 			String loginInfo = new String(b);
 			loginInfo = loginInfo.trim();
 			sfTextArea.append("loginInfo : " + loginInfo + "\n"); // 내용을 textArea 위에 붙이고
@@ -104,11 +106,13 @@ public class UserInfo extends Thread {
 			
 			if(lists.isIdPasswdCorrect(info[0], info[1])) { 
 				send_Msg("[LOGIN]:OK"); // "[LOGIN]:OK::"
+				System.out.println("[LOGIN]:OK");
 				userNum = lists.getUserNum(info[0]); // 접속자 ID에 대응하는 userNum 정보 등록
 				sfTextArea.append("ID " + info[0] + " 접속\n");
 				sfTextArea.setCaretPosition(sfTextArea.getText().length()); // 맨 아래로 스크롤
 				sfTextArea.append("[LOGIN]:OK\n");
 				isCorrect = true;
+				System.out.println("[LOGIN]:OK end");
 			}
 			else {
 				send_Msg("[LOGIN]:NOK::");
@@ -128,8 +132,9 @@ public class UserInfo extends Thread {
 	
 	public void send_Msg(String str) {
 		try {
-			byte[] b = str.getBytes();
-			dos.write(b);
+			//byte[] b = str.getBytes();
+			//dos.write(b);
+			dos.writeUTF(str);
 		}
 		catch (IOException e) {
 			sfTextArea.append("메세지 송신 에러 발생\n");
@@ -155,11 +160,13 @@ public class UserInfo extends Thread {
 		while(true) {
 			try {
 				// 사용자에게 받는 메세지
-				byte[] b = new byte[128];
-				dis.read(b);	// Block Method
+				//byte[] b = new byte[128];
+				//dis.read(b);	// Block Method
+				String b = dis.readUTF();
+				
 				String msg = new String(b);
 				msg = msg.trim();
-
+				System.out.println("read()");
 				/*** 프로토콜에 따라 브로드 캐스트 하기 ***/
 				
 				InMessage(msg); // broad_Cast

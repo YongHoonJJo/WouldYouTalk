@@ -42,6 +42,8 @@ public class Server {
 		lists.addUser(new User("십돌이", "h10", "1234", lists));
 		lists.addUser(new User("슛돌이", "h11", "1234", lists));
 		
+		lists.getUserVec().elementAt(1).setStateMsg("Hoon");
+		
 		// 친구추가
 		for(int i=1; i<11; i++)
 			lists.getUserVec().elementAt(0).addFriends(i);
@@ -84,11 +86,14 @@ public class Server {
 						if(userInfo.User_network()) { // ID, PW가 유효하다면,
 							vc.add(userInfo);
 							// userNum을 통해 soc 찾기, 동일아이디 다중접속 고려해보기..
+							System.out.println("before sendF");
 							userInfo.sendFriendsList();// 친구리스트 보내기
+							System.out.println("after sendF");
 							// 프사 데이터 보내기
 							// 채팅리스트 보내기
 							// 나를 등록한 친구 리스트 보내기..
 							userInfo.start(); // 유저 객체의 스레드 실행
+							System.out.println("after thread");
 						}
 						else {
 							// 스트림 종료
