@@ -59,6 +59,17 @@ public class UserInfo extends Thread {
 		sfTextArea.setCaretPosition(sfTextArea.getText().length());
 	}
 	
+	public void sendChatData() {
+		System.out.println("sendChatData()");
+		Vector<Integer> chattingLists = vcUser.elementAt(userNum).getChattingList();
+		for(Integer chatNum : chattingLists) {
+			ChatData chatData = lists.getChatData(chatNum);
+			String chatMsg = chatData.getMsg();
+			System.out.println("chatMsg : " + chatMsg);
+			// send_Msg(chatMsg); 프로토콜 정해서 보내기
+		}
+	}
+	
 	public void sendFriendsList() { // id, name, stateMsg, photo
 		Vector<Integer> Friends = vcUser.elementAt(userNum).getFriendsNumVec();	
 		StringBuffer Flist = new StringBuffer("[FLIST]::");
@@ -100,7 +111,7 @@ public class UserInfo extends Thread {
 			sfTextArea.append("loginInfo : " + loginInfo + "\n"); // 내용을 textArea 위에 붙이고
 			sfTextArea.setCaretPosition(sfTextArea.getText().length()); // 맨 아래로 스크롤
 			
-			/*** ID / PW check ***/
+/*** ID / PW check ***/
 			String[] data = loginInfo.split(":");
 			String[] info = data[1].split("/");
 			
@@ -108,6 +119,10 @@ public class UserInfo extends Thread {
 				send_Msg("[LOGIN]:OK"); // "[LOGIN]:OK::"
 				System.out.println("[LOGIN]:OK");
 				userNum = lists.getUserNum(info[0]); // 접속자 ID에 대응하는 userNum 정보 등록
+				
+				// user 와 userInfo mapping // 다중접속 고려해보기
+				lists.getUserVec().elementAt(userNum).setUserInfo(this);  
+				
 				sfTextArea.append("ID " + info[0] + " 접속\n");
 				sfTextArea.setCaretPosition(sfTextArea.getText().length()); // 맨 아래로 스크롤
 				sfTextArea.append("[LOGIN]:OK\n");
@@ -135,18 +150,21 @@ public class UserInfo extends Thread {
 			//byte[] b = str.getBytes();
 			//dos.write(b);
 			dos.writeUTF(str);
+		
 		}
 		catch (IOException e) {
-			sfTextArea.append("메세지 송신 에러 발생\n");
+			sfTextArea.append("메세지 송신 에러 발생---\n");
 			sfTextArea.setCaretPosition(sfTextArea.getText().length());
 		}
 	}
 	
 	public void InMessage(String str) {
+		//String name = vcUser.elementAt(userNum).getName();
+		//sfTextArea.append(name + " " + str + "\n");
 		sfTextArea.append(str + "\n");
 		sfTextArea.setCaretPosition(sfTextArea.getText().length());
 
-		broad_cast(str);
+		//broad_cast(str);
 	}
 	
 	public void broad_cast(String str) {
@@ -167,9 +185,48 @@ public class UserInfo extends Thread {
 				String msg = new String(b);
 				msg = msg.trim();
 				System.out.println("read()");
-				/*** 프로토콜에 따라 브로드 캐스트 하기 ***/
 				
-				InMessage(msg); // broad_Cast
+				InMessage(msg); // debug
+				
+				String[] data = msg.split("::");
+				/*** 프로토콜에 따라 처리하기 ***/
+				
+/*** 1:1 메세지 수신 ***/
+				if(data[0].equals("[MSG]")) { // 메세지 수신
+					int chatNum = Integer.parseInt(data[1]);
+					
+					String recvID = data[2];
+					String sentID = data[3];
+					String msgTime = data[4];
+					
+					int recvUserNum = lists.getUserNum(recvID);
+					int sentUserNum = lists.getUserNum(sentID);
+
+					if(chatNum == 0) {
+						chatNum = lists.getNewChatNum(recvUserNum, sentUserNum);
+						data[1] = ""+chatNum;
+						lists.getUserVec().elementAt(sentUserNum).addChattingLists(chatNum);
+						lists.getUserVec().elementAt(recvUserNum).addChattingLists(chatNum);
+					}
+					
+					lists.getUserVec().elementAt(recvUserNum).addChatUser(sentID, chatNum);
+					lists.getUserVec().elementAt(sentUserNum).addChatUser(recvID, chatNum);
+					
+					String serverMsg = "";
+					for(String s : data) serverMsg += (s+"::");
+					
+					lists.getUserVec().elementAt(recvUserNum).sendMsg(serverMsg);
+					InMessage("recv client " + recvUserNum + " : " + serverMsg);
+					//lists.getUserVec().elementAt(recvUserNum).addChattingLists(chatNum);
+					
+					if(recvID.equals(sentID) == false) {
+						lists.getUserVec().elementAt(sentUserNum).sendMsg(serverMsg);
+						InMessage("send client " + sentUserNum + " : " + serverMsg);
+						//lists.getUserVec().elementAt(sentUserNum).addChattingLists(chatNum);
+					}
+					// 방번호에 해당하는 채팅 내용 저장하기
+					lists.addChatMsg(chatNum, serverMsg+"@@"); 
+				}
 			}
 			catch (IOException e) {
 				try {
@@ -177,7 +234,8 @@ public class UserInfo extends Thread {
 					dis.close();
 					user_socket.close();
 					vcUserInfo.removeElement(this); // 에러가 난 현재 객체를 벡터에서 삭제
-					sfTextArea.append(vcUserInfo.size() + " : 현재 벡터에 담겨진 사용자 수\n");
+					lists.getUserVec().elementAt(userNum).removeUserInfoVec(this);
+					sfTextArea.append(vcUserInfo.size() + " : 현재 벡터에 담겨진 사용자 수\n" + userNum + " user logout\n");
 					sfTextArea.setCaretPosition(sfTextArea.getText().length());
 					break;
 				} catch (Exception ee) {

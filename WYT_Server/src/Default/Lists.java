@@ -12,11 +12,34 @@ public class Lists {
 	private Vector<UserInfo> vcSoc = new Vector<UserInfo>(); // 접속중인 사용자 리스트
 	
 	private int chatNum;
-	private Vector<String> chattingLists = new Vector<String>(); // 모든 사용자들의 채팅 내용 리스트
+	private Vector<ChatData> chatDataVec = new Vector<ChatData>(); // 모든 사용자들의 채팅 내용 리스트
 	// 단체채팅은 추가할지 같이 포함시킬지 고민해보기..
 	
 	public Lists() {
 		userNum = chatNum = 0;
+		chatDataVec.add(new ChatData("empty")); // 0번 인덱스는 사용하지 않음.
+	}
+	
+	public ChatData getChatData(int chatNum) {
+		return chatDataVec.elementAt(chatNum);
+	}
+	
+	public void addChatMsg(int chatNum, String msg) {
+		if(chatDataVec.size() == chatNum)
+			chatDataVec.add(new ChatData(msg));
+		else
+			chatDataVec.elementAt(chatNum).addMsg(msg);
+	}
+
+	
+	public int getNewChatNum(int recvUserNum, int sentUserNum) {
+		// 대화중인 방번호가 있는지 체크하기
+		String sentID = vcUsers.elementAt(sentUserNum).getID();
+		if(vcUsers.elementAt(recvUserNum).hasChatUser(sentID)) 
+			return vcUsers.elementAt(recvUserNum).getChatUserChatNum(sentID);
+		else {
+			return ++chatNum; // 1번방부터 사용
+		}
 	}
 	
 	public Vector<User> getUserVec() {

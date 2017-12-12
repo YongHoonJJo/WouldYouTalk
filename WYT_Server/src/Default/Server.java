@@ -47,9 +47,10 @@ public class Server {
 		// 친구추가
 		for(int i=1; i<11; i++)
 			lists.getUserVec().elementAt(0).addFriends(i);
-		//lists.getUserVec().elementAt(0).addFriends(2);
-		
-		//for(int i=0; ; )
+		lists.getUserVec().elementAt(1).addFriends(0);
+		lists.getUserVec().elementAt(1).addFriends(2);
+		lists.getUserVec().elementAt(2).addFriends(0);
+		lists.getUserVec().elementAt(2).addFriends(1);
 		
 		this.serverFrame = serverFrame;
 		sfStartBtn = serverFrame.getStartBtn();
@@ -86,12 +87,11 @@ public class Server {
 						if(userInfo.User_network()) { // ID, PW가 유효하다면,
 							vc.add(userInfo);
 							// userNum을 통해 soc 찾기, 동일아이디 다중접속 고려해보기..
-							System.out.println("before sendF");
-							userInfo.sendFriendsList();// 친구리스트 보내기
-							System.out.println("after sendF");
 							
+							userInfo.sendFriendsList();// 친구리스트 보내기
+						
 							// 프사 데이터 보내기
-							// 채팅리스트 보내기
+							userInfo.sendChatData(); // 채팅리스트 보내기
 							// 나를 등록한 친구 리스트 보내기..
 							
 							userInfo.start(); // 유저 객체의 스레드 실행
