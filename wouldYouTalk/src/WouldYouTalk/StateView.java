@@ -48,7 +48,6 @@ public class StateView extends JFrame {
 		stateInfoPanel = new StateInfoPanel(user, this);
         stateInfoPanel.setBounds(0, 300, 328, 218);
         add(stateInfoPanel);
-        
 	}
 	
 	public void disposePanel() {

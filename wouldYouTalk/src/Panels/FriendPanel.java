@@ -1,6 +1,10 @@
 package Panels;
 
 import java.awt.*;
+import java.net.Socket;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
 import javax.swing.*;
 
 import WouldYouTalk.UserInfo;
@@ -19,8 +23,10 @@ public class FriendPanel extends JPanel {
 		setOpaque(false);
 		
 		/*** changes ImageIcon size (w, h) ***/
-		userPhoto = new ImageIcon(user.getPhotoPath());
+		//userPhoto = new ImageIcon(user.getPhotoPath());
+		userPhoto = user.getProfileIcon();
 		Image img = userPhoto.getImage(); 
+		
 		Image newImg = img.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
 		userPhoto = new ImageIcon(newImg);
 		nameLabel = new JLabel(" "+userName, userPhoto, JLabel.LEFT);

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -15,7 +16,9 @@ public class ListFriends extends JPanel{
 	private Vector<FriendPanel> jpanelList;
 	private Vector<StateMsgPanel> jpanelStateList;
 	
-	private Vector<UserInfo> userInfoVec;
+	private HashMap<String, Integer> IDtoUserInfoVecIdx;
+	
+	private Vector<UserInfo> userInfoVec; // My Friends list
 	private UserInfo Me = null;
 	private int friendCnt;
 	
@@ -34,19 +37,22 @@ public class ListFriends extends JPanel{
 		jpanelList = new Vector<FriendPanel>();
 		jpanelStateList = new Vector<StateMsgPanel>();
 		userInfoVec = new Vector<UserInfo>();
+		IDtoUserInfoVecIdx = new HashMap<String, Integer>();
 		setLayout(null);
 		
 		stateView = null;
-		
-		/*
-		fp1.setBounds(0, 0, 150, 50);
-		fp2.setBounds(0, 50, 150, 50);
-		fp3.setBounds(0, 100, 150, 50);
-		
-		smp1.setBounds(150, 12, 300, 50);
-		smp2.setBounds(150, 12+50, 400, 50);
-		smp3.setBounds(150, 12+100, 500, 50);
-		*/
+	}
+	
+	public int getUserInfoVecIdx(String ID) {
+		return IDtoUserInfoVecIdx.get(ID);
+	}
+	
+	public Vector<UserInfo> getUserInfoVec() {
+		return userInfoVec;
+	}
+	
+	public UserInfo getMyUserInfo() {
+		return Me;
 	}
 	
 	public void initUserInfo(String id, String name, String stateMsg) {
@@ -54,6 +60,11 @@ public class ListFriends extends JPanel{
 		UserInfo userInfo = new UserInfo(id, name, stateMsg);
 		if(Me == null) Me = userInfo;
 		userInfoVec.add(userInfo);
+		IDtoUserInfoVecIdx.put(id, userInfoVec.size()-1);
+	}
+	
+	public void doRevalidate() {
+		revalidate();
 	}
 	
 	public void setFriendPanel() {

@@ -22,12 +22,12 @@ public class ChatTextAreaPanel extends JPanel {
 	
 	private Network network;
 	private UserInfo user;
-	
 	private int chatNum;
 	
-	public ChatTextAreaPanel(UserInfo user) {
+	public ChatTextAreaPanel(int chatNum, UserInfo user) {
 		network = MainView.getNetwork();
 		this.user = user;
+		this.chatNum = chatNum;
 		
 		this.setBackground(Color.YELLOW);
 		this.setLayout(null);;
@@ -40,20 +40,20 @@ public class ChatTextAreaPanel extends JPanel {
 		sendMsgBtn.setBounds(315, 5, 80, 50);
 		add(sendMsgBtn);
 		
-		if(MainView.getListChatting().hasChatRoom(user.getID())) {
-			chatNum = MainView.getListChatting().getChatNum(user.getID());
-		}		
-		else {
-			chatNum = 0;
-		}
-		
 		MsgSendActionListener msgSendActionListener = new MsgSendActionListener();
 		sendMsgBtn.addActionListener(msgSendActionListener);
+	}
+		
+	public void setChatNum(int chatNum) {
+		this.chatNum = chatNum;
 	}
 	
 	private class MsgSendActionListener implements ActionListener {
     	public void actionPerformed(ActionEvent e) {
     		String msg = inputArea.getText();	
+    		
+    		if(msg.equals("")) return ;
+    		
     		inputArea.setText("");
     		
     		String myID = LoginView.getMyID();
@@ -67,7 +67,7 @@ public class ChatTextAreaPanel extends JPanel {
     		String min = cal.get ( Calendar.MINUTE )+"";
     		if(min.length() == 1) min = "0"+min;
     		String curTime = hour + ":" + min;
-    		
+    		// 서버로 메세지 보내기
     		network.sendMessage("[MSG]::"+chatNum+"::"+frID+"::"+myID+"::"+curTime+"::"+msg);
     	}
 	}

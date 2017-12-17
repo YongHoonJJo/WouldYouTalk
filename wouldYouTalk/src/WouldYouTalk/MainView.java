@@ -6,13 +6,17 @@ import javax.swing.JScrollPane;
 
 public class MainView extends JFrame {
 	private static ListChatting listChatting; // JPanel
-	private ListFriends listFriends;
+	private static ListFriends listFriends;
 	private ListMoreInfo listMoreInfo;
 	private MenuView menu;
 	
 	//private JScrollPane js;
 	
 	private static Network network;
+	
+	public static ListFriends getListFriends() {
+		return listFriends;
+	}
 	
 	public static ListChatting getListChatting() {
 		return listChatting;
@@ -25,8 +29,8 @@ public class MainView extends JFrame {
 	public MainView(Network network) {
 		this.network = network;
 		
-		listChatting = new ListChatting();
 		listFriends = new ListFriends();
+		listChatting = new ListChatting();
 		listMoreInfo = new ListMoreInfo();
 		menu = new MenuView(this);	
 		
@@ -51,9 +55,11 @@ public class MainView extends JFrame {
 	}
 	//public ListChatting getListChatting() { return listChatting; }
 	
+	/*
 	public ListFriends getListFriends() {
 		return listFriends;
 	}
+	*/
 	
 	public ListMoreInfo getListMoreInfo() {
 		return listMoreInfo;

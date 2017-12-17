@@ -15,7 +15,9 @@ public class StateProfileImgPanel extends JPanel {
 	public StateProfileImgPanel(UserInfo user) {
 		setLayout(null);
 		
-        userPhoto = new ImageIcon(user.getPhotoPath()); // 변경해야할 부분...
+        //userPhoto = new ImageIcon(user.getPhotoPath()); // 변경해야할 부분...
+        userPhoto = user.getProfileIcon();
+        
 		Image img = userPhoto.getImage(); 
 		Image newImg = img.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
 		userPhoto = new ImageIcon(newImg);

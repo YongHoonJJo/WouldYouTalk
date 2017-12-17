@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import WouldYouTalk.ChatView;
+import WouldYouTalk.MainView;
 import WouldYouTalk.StateView;
 import WouldYouTalk.UserInfo;
 
@@ -35,17 +36,17 @@ public class StateInfoPanel extends JPanel {
 		chatBtn.setBounds(105, 80, 100, 30);
 		chatBtn.addActionListener(new PopChatRoomListener());
 		add(chatBtn);
-		
 		setLayout(null);
-		
 		//setBounds(0, 300, 328, 218);
 	}
 	
 	class PopChatRoomListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			stateView.disposePanel();
-			// 이미 팝되어 있는지에 대한 예외처리 하기
-			new ChatView(user); 
+			if(user.getChatViewOn() == false) { // 이미 팝되어 있는지에 대한 예외처리
+				user.setChatViewOn(true);
+				MainView.getListChatting().addChatView(user.getID(), new ChatView(user));
+			}
 		}
 	}
 }
