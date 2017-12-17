@@ -43,9 +43,10 @@ public class Server {
 		lists.addUser(new User("슛돌이", "h11", "1234", lists));
 		
 		lists.getUserVec().elementAt(1).setStateMsg("Hoon");
+		lists.getUserVec().elementAt(0).setStateMsg("prettyje");
 		
 		// 친구추가
-		for(int i=1; i<11; i++)
+		for(int i=1; i<8; i++)
 			lists.getUserVec().elementAt(0).addFriends(i);
 		lists.getUserVec().elementAt(1).addFriends(0);
 		lists.getUserVec().elementAt(1).addFriends(2);
@@ -80,18 +81,19 @@ public class Server {
 						sfTextArea.append("사용자 접속 대기중...\n");
 						/*** Block Method ***/
 						soc = socket.accept(); 
-						sfTextArea.append("사용자 접속!!\n");
+						sfTextArea.append("사용자 soc 접속!!\n");
 						// 연결된 소켓 정보는 금방 사라지므로, user 클래스 형태로 객체 생성
 						
 						UserInfo userInfo = new UserInfo(serverFrame, soc, lists);
 						if(userInfo.User_network()) { // ID, PW가 유효하다면,
 							vc.add(userInfo);
-							// userNum을 통해 soc 찾기, 동일아이디 다중접속 고려해보기..
+							// userNum을 통해 soc 찾기, 동일아이디 다중접속 고려해보기..ok
 							
-							userInfo.sendFriendsList();// 친구리스트 보내기
+							userInfo.sendFriendsList(); // 친구리스트 보내기
 						
-							// 프사 데이터 보내기
-							userInfo.sendChatData(); // 채팅리스트 보내기
+							userInfo.sendProfileIcon(); // 프사 데이터 보내기
+							
+							//userInfo.sendChatData(); // 채팅리스트 보내기
 							// 나를 등록한 친구 리스트 보내기..
 							
 							userInfo.start(); // 유저 객체의 스레드 실행
